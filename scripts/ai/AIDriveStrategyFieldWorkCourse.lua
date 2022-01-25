@@ -796,6 +796,7 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
                 self:debugSpares('convoy: waiting untill I am further away then min distance (%.1f m > %.1f) to vehicle in front of me',
                     closestDistance, self.settings.convoyMinDistance:getValue())
                 self:setMaxSpeed(self.maxSpeed)
+            end
         end
     elseif position == 1 then
         if closestDistance > self.settings.convoyMaxDistance:getValue() then

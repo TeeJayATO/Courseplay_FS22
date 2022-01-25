@@ -788,32 +788,33 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
             self:debugSparse('convoy: too close (%.1f m < %.1f) to vehicle in front of me, slowing down.',
                     closestDistance, self.settings.convoyMinDistance:getValue())
             self:setMaxSpeed(0.5 * self.maxSpeed)
-        elseif closestDistance < (self.settings.convoyMinDistance:getValue()/2) then
-            self:debugSparse('convoy: closer then half the min distance (%.1f m < %.1f) to vehicle in front of me, stopping.',
-                    closestDistance, self.settings.convoyMinDistance:getValue()/2)
-            self:setMaxSpeed(0)
-            if closestDistance > self.settings.convoyMinDistance:getValue() then
-                self:debugSpares('convoy: waiting untill I am further away then min distance (%.1f m > %.1f) to vehicle in front of me',
-                    closestDistance, self.settings.convoyMinDistance:getValue())
-                self:setMaxSpeed(self.maxSpeed)
+            if closestDistance < (self.settings.convoyMinDistance:getValue()/2) then
+                self:debugSparse('convoy: closer then half the min distance (%.1f m < %.1f) to vehicle in front of me, stopping.',
+                        closestDistance, self.settings.convoyMinDistance:getValue()/2)
+                self:setMaxSpeed(0)
+                if closestDistance > self.settings.convoyMinDistance:getValue() then
+                    self:debugSpares('convoy: waiting untill I am further away then min distance (%.1f m > %.1f) to vehicle in front of me',
+                        closestDistance, self.settings.convoyMinDistance:getValue())
+                    self:setMaxSpeed(self.maxSpeed)
+                end
             end
-        end
+        end    
     elseif position == 1 then
         if closestDistance > self.settings.convoyMaxDistance:getValue() then
             self:debugSparse('convoy: too far (%.1f m > %.1f) from the vehicles behind me, slowing down.',
                     closestDistance, self.settings.convoyMaxDistance:getValue())
             self:setMaxSpeed(closestVehicle and 0.5 * closestVehicle:getLastSpeed() or 0.5 * self.maxSpeed)
-        elseif closestDistance > (self.settings.convoyMaxDistance:getValue()*1.5) then
-            self:debugSparse('convoy: 1.5 the distance (%.1f m > %.1f) from the vehicles behind me, stopping.',
-                    closestDistance, self.settings.convoyMaxDistance:getValue()*1.5)
-            self:setMaxSpeed(0)
-            if closestDistance < self.settings.convoyMaxDistance:getValue() then
-                self:debugSpares('convoy: waiting untill I am under max distance (%.1f m > %.1f) from the vehicles behind me',
-                    closestDistance, self.settings.convoyMaxDistance:getValue())
-                self:setMaxSpeed(self.maxSpeed)
+            if closestDistance > (self.settings.convoyMaxDistance:getValue()*1.5) then
+                self:debugSparse('convoy: 1.5 the distance (%.1f m > %.1f) from the vehicles behind me, stopping.',
+                        closestDistance, self.settings.convoyMaxDistance:getValue()*1.5)
+                self:setMaxSpeed(0)
+                if closestDistance < self.settings.convoyMaxDistance:getValue() then
+                    self:debugSpares('convoy: waiting untill I am under max distance (%.1f m > %.1f) from the vehicles behind me',
+                        closestDistance, self.settings.convoyMaxDistance:getValue())
+                    self:setMaxSpeed(self.maxSpeed)
+                end
             end
         end
-
         closestDistance = 0
     end
 
